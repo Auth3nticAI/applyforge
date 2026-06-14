@@ -1,5 +1,7 @@
 # ApplyForge — an honest job-search copilot
 
+![CI](https://github.com/Auth3nticAI/applyforge/actions/workflows/ci.yml/badge.svg)
+
 ApplyForge helps a software engineer run a smarter, more honest job search. Upload your
 resume once; ApplyForge pulls **real openings** from public ATS job feeds, scores how well
 you *truly* match each one (and what you're missing), tailors your resume and cover letter
@@ -101,6 +103,9 @@ To reset to a clean seeded state: `docker compose exec backend python seed.py`.
 
 ## Testing
 
+Both tiers are tested and run in CI (GitHub Actions) on every push:
+
 ```bash
-cd backend && pytest        # API smoke tests; all Claude calls are mocked (no key needed)
+cd backend && pytest        # 14 API tests; all Claude calls are mocked (no key/network needed)
+cd frontend && npm test     # vitest: api client URL/method/body + error handling
 ```
