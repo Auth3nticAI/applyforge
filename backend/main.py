@@ -4,6 +4,7 @@ from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
 from sqlalchemy import func
 import json
+import os
 import anthropic
 
 from database import Base, engine, get_db
@@ -15,9 +16,14 @@ from services import job_feed, resume_text
 
 app = FastAPI(title="ApplyForge API")
 
+# Allowed browser origins. Defaults to local dev; in production set
+# ALLOWED_ORIGINS to your deployed frontend URL(s), comma-separated.
+_origins = os.getenv("ALLOWED_ORIGINS", "http://localhost:3000")
+ALLOWED_ORIGINS = [o.strip() for o in _origins.split(",") if o.strip()]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],
+    allow_origins=ALLOWED_ORIGINS,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
