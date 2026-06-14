@@ -1,0 +1,86 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─────────────────────────────────────────────────────────────────────────
+ * ApplyForge — "Honest Signal" design tokens.
+ * Ported from the Open Design system at
+ * open-design/design-systems/applyforge/tokens.css (DESIGN.md is the prose
+ * source of truth). Trustworthy deep-teal accent on a warm paper canvas;
+ * saturated color is reserved for the match-score signal scale.
+ * ─────────────────────────────────────────────────────────────────────── */
+:root {
+  /* Surface */
+  --bg: #fafaf7;
+  --surface: #ffffff;
+  --surface-warm: #f4f2ec;
+
+  /* Foreground ramp */
+  --fg: #1b1b18;
+  --fg-2: #33332e;
+  --muted: #6e6e64;
+  --meta: #9a9a8e;
+
+  /* Border */
+  --border: #e6e3db;
+  --border-soft: #f0eee7;
+
+  /* Accent — deep teal-petrol (trust) */
+  --accent: #0e6e72;
+  --accent-on: #ffffff;
+  --accent-hover: color-mix(in oklab, var(--accent), black 10%);
+  --accent-active: color-mix(in oklab, var(--accent), black 18%);
+  --accent-tint: color-mix(in oklab, var(--accent), white 88%);
+
+  /* Signal scale — the match-score system */
+  --success: #15803d;
+  --warn: #b45309;
+  --danger: #b91c1c;
+  --info: #1d6fb8;
+  --success-tint: color-mix(in oklab, var(--success), white 86%);
+  --warn-tint: color-mix(in oklab, var(--warn), white 86%);
+  --danger-tint: color-mix(in oklab, var(--danger), white 86%);
+  --info-tint: color-mix(in oklab, var(--info), white 86%);
+
+  /* Typography */
+  --font-display: "Inter", -apple-system, system-ui, sans-serif;
+  --font-body: "Inter", -apple-system, system-ui, sans-serif;
+  --font-mono: ui-monospace, "JetBrains Mono", monospace;
+
+  /* Radius */
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-lg: 18px;
+
+  /* Elevation */
+  --elev-raised: 0 4px 16px color-mix(in oklab, var(--fg), transparent 92%);
+  --focus-ring: 0 0 0 3px color-mix(in oklab, var(--accent), transparent 70%);
+}
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  body {
+    background-color: var(--bg);
+    color: var(--fg);
+    font-family: var(--font-body);
+    line-height: 1.55;
+  }
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    letter-spacing: -0.011em;
+    color: var(--fg);
+  }
+  /* Uniform keyboard-focus indicator (accessibility-baseline). */
+  :focus-visible {
+    outline: none;
+    box-shadow: var(--focus-ring);
+    border-radius: var(--radius-sm);
+  }
+  ::selection {
+    background-color: var(--accent-tint);
+    color: var(--fg);
+  }
+}

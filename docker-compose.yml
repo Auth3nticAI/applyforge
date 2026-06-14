@@ -1,0 +1,45 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: applyforge
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U user -d applyforge"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build: ./backend
+    ports:
+      - "8000:8000"
+    env_file:
+      - ./backend/.env          # supplies ANTHROPIC_API_KEY (DATABASE_URL from here is overridden below)
+    environment:
+      # Overrides backend/.env's localhost value: inside Compose the DB host is the service name `db`.
+      DATABASE_URL: postgresql://user:password@db:5432/applyforge
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped  # self-heal a transient db-DNS race on cold start
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        # Baked into the browser bundle at build time. The browser runs on
+        # your host, so it must reach the backend via the published port.
+        NEXT_PUBLIC_API_URL: http://localhost:8000
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+
+volumes:
+  pgdata:
